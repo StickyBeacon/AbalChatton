@@ -15,4 +15,9 @@ public class KogelScript : MonoBehaviour
             collision.gameObject.GetComponent<CannonManager>().CannonHit();
         }
     }
+
+    public void Initialize()
+    {
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f,1f), Random.Range(0f, 1f), Random.Range(0f, 1f),1);
+    }
 }
