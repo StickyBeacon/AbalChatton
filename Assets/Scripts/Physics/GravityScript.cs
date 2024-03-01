@@ -5,7 +5,6 @@ using UnityEngine;
 public class GravityScript : MonoBehaviour
 {
     public LayerMask AttractionLayer;
-    public float gravity = -1f;
     public List<Collider2D> AttractedObjects = new List<Collider2D>();
     [HideInInspector] public Transform planetTransform;
 
@@ -15,35 +14,27 @@ public class GravityScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        SetAttractedObjects();
-    }
+    
 
     private void FixedUpdate()
     {
         AttractObjects();
     }
 
-    void SetAttractedObjects()
-    {
-        GameObject[] kogels = GameObject.FindGameObjectsWithTag("Kogel");
-        foreach(GameObject gm in kogels)
-        {
-            AttractedObjects.Add(gm.GetComponent<Collider2D>());
-        }
-    }
-
     public void removeAttractedObject(Collider2D gm) {
         AttractedObjects.RemoveAll((e) => e.gameObject.GetInstanceID() == gm.gameObject.GetInstanceID());
-        Destroy(gm.gameObject);
+    }
+
+    public void addAttractedObject(Collider2D gm)
+    {
+        AttractedObjects.Add(gm);
     }
 
     void AttractObjects()
     {
-        for(int i = 0; i<AttractedObjects.Count; i++)
+        foreach(Collider2D col in AttractedObjects)
         {
-            AttractedObjects[i].GetComponent<AttractedScript>().Attract(this); //Jetst habben sie die sheise
+            col.GetComponent<AttractedScript>().Attract(this); //Jetst habben sie die sheise
         }
     }
 

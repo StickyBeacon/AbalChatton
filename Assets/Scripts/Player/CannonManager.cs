@@ -5,20 +5,18 @@ using UnityEngine;
 public class CannonManager : MonoBehaviour
 {
     int HP = 3;
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if(collision.gameObject.tag == "Enemy")
+        {
+            print("you're mom");
+            CannonHit();
+            Destroy(collision.gameObject);
+        }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void CannonHit()
     {
+        print("ow!!");
         HP--;
         if(HP == 0)
         {

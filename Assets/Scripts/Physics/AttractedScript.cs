@@ -14,12 +14,7 @@ public class AttractedScript : MonoBehaviour
     public void Attract(GravityScript grav)
     {
         Vector2 attracionDir = (Vector2)grav.planetTransform.position - m_rigidbody.position;
-        m_rigidbody.AddForce(attracionDir.normalized * -grav.gravity * Time.fixedDeltaTime);
-        if (m_rigidbody.velocity.magnitude > maxForce)
-        {
-            Debug.Log("Boom!!!");
-            GameObject.Find("CannonBody").GetComponent<GravityScript>().removeAttractedObject(gameObject.GetComponent<Collider2D>());
-        }
+        m_rigidbody.AddForce(attracionDir.normalized * 3000f * Time.fixedDeltaTime);
     }
 
     // some code from https://www.youtube.com/watch?v=e4DxQhTKJ7Y

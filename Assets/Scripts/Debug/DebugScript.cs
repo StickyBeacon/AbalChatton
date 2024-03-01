@@ -12,7 +12,8 @@ public class DebugScript : MonoBehaviour
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 offset = new Vector3(0, 0, 10);
-            Instantiate(prefab, pos+offset, Quaternion.identity);
+            GameObject newthing = Instantiate(prefab, pos+offset, Quaternion.identity);
+            GameObject.Find("CannonBody").GetComponent<GravityScript>().addAttractedObject(newthing.GetComponent<Collider2D>());
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
