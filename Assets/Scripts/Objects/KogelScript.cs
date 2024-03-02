@@ -14,6 +14,7 @@ public class KogelScript : MonoBehaviour
         }
         if(collision.gameObject.tag == "Enemy")
         {
+            gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/enemyHit" + Random.Range(1, 5).ToString()));
             collision.gameObject.GetComponent<EnemyScript>().addDamage(1);
             rolForAb(collision.gameObject);
         }

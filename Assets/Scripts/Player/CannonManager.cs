@@ -15,6 +15,7 @@ public class CannonManager : MonoBehaviour
     }
     public void CannonHit()
     {
+        gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/hurt"));
         print("ow!!");
         HP--;
         if(HP == 0)

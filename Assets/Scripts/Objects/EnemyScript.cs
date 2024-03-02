@@ -10,6 +10,7 @@ public class EnemyScript : MonoBehaviour
     float speed = 0.005f;
     public void Initialise()
     {
+        gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/enemySpawn" + Random.Range(1,5)));
         focus = new Vector3(0, 0, 0);
         float randSize = Random.Range(0.5f, 2f);
         transform.localScale = new Vector3(randSize, randSize, randSize);
@@ -26,6 +27,7 @@ public class EnemyScript : MonoBehaviour
         gameObject.transform.localScale = gameObject.transform.localScale / (amount * 2);
         if (gameObject.transform.localScale.magnitude < 0.5f)
         {
+            GameObject.Find("CannonBody").GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/enemyDeath" + Random.Range(1, 4)));
             Destroy(gameObject);
         }
     }
@@ -41,13 +43,6 @@ public class EnemyScript : MonoBehaviour
             freezetime -= Time.deltaTime;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Player")
-        {
-            Debug.Log("You lose!");
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -55,10 +50,7 @@ public class EnemyScript : MonoBehaviour
         {
             addDamage(1);
             collision.gameObject.GetComponent<KogelScript>().rolForAb(gameObject);
-        }
-        else if (collision.gameObject.tag == "Player")
-        {
-            Debug.Log("You lose!!");
+            collision.gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/enemyHit" + Random.Range(1, 5).ToString()));
         }
     }
 

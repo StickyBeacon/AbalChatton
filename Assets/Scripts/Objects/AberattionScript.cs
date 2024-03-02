@@ -7,42 +7,37 @@ public class AberattionScript : MonoBehaviour
     GameObject aberrationType;
     public void Initialise()
     {
-        IEnumerator waitAbit()
+        int rand = Random.Range(0, 5);
+        switch (rand)
         {
-            yield return new WaitForSeconds(0.5f);
-            int rand = Random.Range(0, 5);
-            switch (rand)
-            {
-                case 0:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/BHole");
-                    break;
-                case 1:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/Electric");
-                    break;
-                case 2:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/Explosion");
-                    break;
-                case 3:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/Freeze");
-                    break;
-                case 4:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/Laser");
-                    break;
-                default:
-                    gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-                    aberrationType = (GameObject)Resources.Load("Prefabs/BabyBall");
-                    break;
-            }
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-            gameObject.GetComponent<CircleCollider2D>().enabled = true;
+            case 0:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+                aberrationType = (GameObject)Resources.Load("Prefabs/BHole");
+                break;
+            case 1:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+                aberrationType = (GameObject)Resources.Load("Prefabs/Electric");
+                break;
+            case 2:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                aberrationType = (GameObject)Resources.Load("Prefabs/Explosion");
+                break;
+            case 3:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
+                aberrationType = (GameObject)Resources.Load("Prefabs/Freeze");
+                break;
+            case 4:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
+                aberrationType = (GameObject)Resources.Load("Prefabs/Laser");
+                break;
+            default:
+                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                aberrationType = (GameObject)Resources.Load("Prefabs/BabyBall");
+                break;
         }
-        StartCoroutine(waitAbit());
-        
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.GetComponent<CircleCollider2D>().enabled = true;
+
     }
     
 

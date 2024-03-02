@@ -11,6 +11,7 @@ public class ElectricScript : MonoBehaviour
     Material Linemat;
     public void Initialise(int strength, GameObject ignore)
     {
+        gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/electric" + Random.Range(1, 4)));
         Linemat = new Material(Shader.Find("Sprites/Default"));
         this.strength = strength;
         current = ignore;
@@ -54,6 +55,7 @@ public class ElectricScript : MonoBehaviour
             gameObject.transform.position = current.transform.position;
             //VOEG HIER PARTICLES TOE N AL
             current.GetComponent<EnemyScript>().addDamage(1);
+            gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/electric" + Random.Range(1, 4)));
         }
     }
 

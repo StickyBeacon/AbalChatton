@@ -31,20 +31,27 @@ public class CannonScript : MonoBehaviour
             suckPortal.SetActive(true);
         }
     }
-
     void Shoot()
     {
         if (kogelQueue.Count > 0)
         {
-            Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/cannonShot"));
+            
             GameObject nextKogel = kogelQueue.Dequeue();
-            nextKogel.SetActive(true);
-            nextKogel.transform.position = transform.position;
-            //GameObject kogel = Instantiate(nextKogel, transform.position, transform.rotation);
-            Rigidbody2D rb = nextKogel.GetComponent<Rigidbody2D>();
-            rb.AddForce(transform.up * kogelForce, ForceMode2D.Impulse);
-            Cannon.GetComponent<GravityScript>().addAttractedObject(nextKogel.GetComponent<Collider2D>());
-
+            if (Input.GetMouseButton(1))
+            {
+                kogelQueue.Enqueue(nextKogel);
+                Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/switch"));
+            }
+            else
+            {
+                Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/cannonShot"));
+                nextKogel.SetActive(true);
+                nextKogel.transform.position = transform.position;
+                //GameObject kogel = Instantiate(nextKogel, transform.position, transform.rotation);
+                Rigidbody2D rb = nextKogel.GetComponent<Rigidbody2D>();
+                rb.AddForce(transform.up * kogelForce, ForceMode2D.Impulse);
+                Cannon.GetComponent<GravityScript>().addAttractedObject(nextKogel.GetComponent<Collider2D>());
+            }
             Color kogelColor = new Color(0,0,0,0);
             if (kogelQueue.Count > 0)
             {
