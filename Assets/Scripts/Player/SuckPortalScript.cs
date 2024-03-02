@@ -9,6 +9,7 @@ public class SuckPortalScript : MonoBehaviour
         if (collision.gameObject.tag == "Kogel" && collision != null)
         {
             GameObject.Find("CannonShooter").GetComponent<CannonScript>().AddBall(collision.gameObject);
+            GameObject.Find("CannonBody").GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/vwop"));
         }
     }
 }

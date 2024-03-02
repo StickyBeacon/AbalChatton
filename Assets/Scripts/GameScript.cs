@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameScript : MonoBehaviour
 {
     bool active = false;
+    float waveTimer = 30f;
     float timer = 0f;
     public GameObject enemyFab;
     float SpawnRange = 10f;
@@ -31,5 +32,11 @@ public class GameScript : MonoBehaviour
                 timer = Random.Range(1f, 3f);
             }
         }
+        /*waveTimer -= Time.fixedDeltaTime;
+        if (waveTimer < 0)
+        {
+            active = false;
+            //Spawn a couple of items;
+        }*/
     }
 }

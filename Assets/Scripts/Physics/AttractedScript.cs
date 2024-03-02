@@ -5,7 +5,6 @@ using UnityEngine;
 public class AttractedScript : MonoBehaviour
 {
     Rigidbody2D m_rigidbody;
-    float maxForce = 80f;
     void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();

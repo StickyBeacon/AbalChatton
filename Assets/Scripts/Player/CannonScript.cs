@@ -36,6 +36,7 @@ public class CannonScript : MonoBehaviour
     {
         if (kogelQueue.Count > 0)
         {
+            Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/cannonShot"));
             GameObject nextKogel = kogelQueue.Dequeue();
             nextKogel.SetActive(true);
             nextKogel.transform.position = transform.position;
@@ -43,10 +44,18 @@ public class CannonScript : MonoBehaviour
             Rigidbody2D rb = nextKogel.GetComponent<Rigidbody2D>();
             rb.AddForce(transform.up * kogelForce, ForceMode2D.Impulse);
             Cannon.GetComponent<GravityScript>().addAttractedObject(nextKogel.GetComponent<Collider2D>());
+
+            Color kogelColor = new Color(0,0,0,0);
+            if (kogelQueue.Count > 0)
+            {
+                kogelColor = kogelQueue.Peek().GetComponent<KogelScript>().getColor();
+            }
+            Cannon.transform.Find("CannonColor").GetComponent<SpriteRenderer>().color = kogelColor;
+            Cannon.transform.Find("CannonShooterColor").GetComponent<SpriteRenderer>().color = kogelColor;
         }
         else
         {
-            print("tick");
+            Cannon.GetComponent<AudioSource>().Play();
         }
     }
 
@@ -55,6 +64,12 @@ public class CannonScript : MonoBehaviour
     public void AddBall(GameObject caught)
     {
         kogelQueue.Enqueue(caught);
+        if(kogelQueue.Count == 1)
+        {
+            Color kogelColor = kogelQueue.Peek().GetComponent<KogelScript>().getColor();
+            Cannon.transform.Find("CannonColor").GetComponent<SpriteRenderer>().color = kogelColor;
+            Cannon.transform.Find("CannonShooterColor").GetComponent<SpriteRenderer>().color = kogelColor;
+        }
         Cannon.GetComponent<GravityScript>().removeAttractedObject(caught.GetComponent<Collider2D>());
         caught.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         caught.SetActive(false);

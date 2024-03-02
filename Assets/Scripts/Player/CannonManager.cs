@@ -9,7 +9,6 @@ public class CannonManager : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            print("you're mom");
             CannonHit();
             Destroy(collision.gameObject);
         }
