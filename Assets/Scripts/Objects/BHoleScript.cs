@@ -8,7 +8,7 @@ public class BHoleScript : MonoBehaviour
     List<GameObject> caught = new List<GameObject>();
     IEnumerator selfDestruct()
     {
-        yield return new WaitForSeconds(strength);
+        yield return new WaitForSeconds(0.5f + strength/2f);
         gameObject.GetComponent<Collider2D>().enabled = false;
         foreach(GameObject gm in caught)
         {

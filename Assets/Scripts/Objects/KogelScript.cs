@@ -6,6 +6,7 @@ public class KogelScript : MonoBehaviour
 {
     int abStrength;
     GameObject currentAb;
+    string abName;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Kogel")
@@ -30,11 +31,56 @@ public class KogelScript : MonoBehaviour
         return gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color;
     }
 
+    public SpriteRenderer getAbSpriteRenderer()
+    {
+        return transform.Find("Ab").GetComponent<SpriteRenderer>();
+    }
+
     public void changeAberration(GameObject aberattion)
     {
-        abStrength = 1;
-        currentAb = aberattion;
-        print(aberattion);
+        if (currentAb != null) {
+            if (currentAb.name == aberattion.name)
+            {
+                abStrength++;
+                if (abStrength > 5)
+                {
+                    abStrength = 5;
+                }
+                SpriteRenderer abColor = transform.Find("Ab").GetComponent<SpriteRenderer>();
+                switch (abStrength)
+                {
+                    case 2:
+                        abColor.color = Color.gray;
+                        break;
+                    case 3:
+                        abColor.color = Color.white;
+                        break;
+                    case 4:
+                        abColor.color = Color.blue;
+                        break;
+                    case 5:
+                        abColor.color = Color.yellow;
+                        break;
+                }
+                
+            }
+            else
+            {
+                abStrength = 1;
+                currentAb = aberattion;
+                abName = aberattion.name;
+                transform.Find("Ab").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Kogel" + aberattion.name);
+            }
+        }
+        else
+        {
+            abStrength = 1;
+            currentAb = aberattion;
+            abName = aberattion.name;
+            transform.Find("Ab").GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/Kogel" + aberattion.name);
+        }
+
+        Debug.Log(abName);
         //Verander type sprite
         //Particle effects?
     }
@@ -43,18 +89,29 @@ public class KogelScript : MonoBehaviour
     {
         if (currentAb != null)
         {
+
             Vector3 pos = transform.position;
             Vector3 offset = new Vector3(0, 0, 10);
             GameObject boy = Instantiate(currentAb, pos + offset, Quaternion.identity);
-            if (boy.GetComponent<BHoleScript>() != null) boy.GetComponent<BHoleScript>().Initalise(abStrength);
-            else if (boy.GetComponent<BabyScript>() != null)
-            {
-                print("Ik doe het morgen wel!!");
+            switch (abName) {
+                case "BHole":
+                    boy.GetComponent<BHoleScript>().Initalise(abStrength);
+                    break;
+                case "Laser":
+                    boy.GetComponent<LaserScript>().Initialise(abStrength);
+                    break;
+                case "Freeze":
+                    boy.GetComponent<FreezeScript>().Initalise(abStrength);
+                    break;
+                case "Explosion":
+                    boy.GetComponent<ExplosionScript>().Initalise(abStrength);
+                    break;
+                case "Electric":
+                    boy.GetComponent<ElectricScript>().Initialise(abStrength, other);
+                    break;
+                
+
             }
-            else if (boy.GetComponent<LaserScript>() != null) boy.GetComponent<LaserScript>().Initialise(abStrength);
-            else if (boy.GetComponent<ExplosionScript>() != null) boy.GetComponent<ExplosionScript>().Initalise(abStrength);
-            else if (boy.GetComponent<ElectricScript>() != null) boy.GetComponent<ElectricScript>().Initialise(abStrength, other);
-            else if (boy.GetComponent<FreezeScript>() != null) boy.GetComponent<FreezeScript>().Initalise(abStrength);
         }
     }
 }

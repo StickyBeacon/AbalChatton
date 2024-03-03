@@ -11,32 +11,33 @@ public class AberattionScript : MonoBehaviour
         switch (rand)
         {
             case 0:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.blue;
                 aberrationType = (GameObject)Resources.Load("Prefabs/BHole");
                 break;
             case 1:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.yellow;
                 aberrationType = (GameObject)Resources.Load("Prefabs/Electric");
                 break;
             case 2:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.red;
                 aberrationType = (GameObject)Resources.Load("Prefabs/Explosion");
                 break;
             case 3:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.cyan;
                 aberrationType = (GameObject)Resources.Load("Prefabs/Freeze");
                 break;
             case 4:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.magenta;
                 aberrationType = (GameObject)Resources.Load("Prefabs/Laser");
                 break;
             default:
-                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                gameObject.transform.Find("Color").GetComponent<SpriteRenderer>().color = Color.white;
                 aberrationType = (GameObject)Resources.Load("Prefabs/BabyBall");
                 break;
         }
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
+        gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/abSpawn" + Random.Range(1, 4)));
 
     }
     
@@ -46,6 +47,8 @@ public class AberattionScript : MonoBehaviour
         if(collision.gameObject.tag == "Kogel")
         {
             collision.gameObject.GetComponent<KogelScript>().changeAberration(aberrationType);
+            GameObject.Find("GameManager").GetComponent<GameScript>().TakeItem();
+            GameObject.Find("CannonBody").GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/takeAb"));
             Destroy(gameObject);
         }
         

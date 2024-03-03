@@ -13,6 +13,7 @@ public class ElectricScript : MonoBehaviour
     {
         gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/electric" + Random.Range(1, 4)));
         Linemat = new Material(Shader.Find("Sprites/Default"));
+        Linemat.color = Color.yellow;
         this.strength = strength;
         current = ignore;
         coll = gameObject.GetComponent<CircleCollider2D>();

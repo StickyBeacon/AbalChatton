@@ -26,7 +26,7 @@ public class FreezeScript : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<EnemyScript>().Freeze(strength);
+            collision.gameObject.GetComponent<EnemyScript>().Freeze(0.5f + strength/3);
         }
     }
 }

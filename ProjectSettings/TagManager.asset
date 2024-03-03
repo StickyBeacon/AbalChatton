@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Kogel
   - Enemy
+  - Ab
   layers:
   - Default
   - TransparentFX

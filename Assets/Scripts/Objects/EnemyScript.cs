@@ -8,19 +8,21 @@ public class EnemyScript : MonoBehaviour
     int distract = 0;
     float freezetime =-1f;
     float speed = 0.005f;
+    float baseSpeed;
     public void Initialise()
     {
         gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/enemySpawn" + Random.Range(1,5)));
         focus = new Vector3(0, 0, 0);
         float randSize = Random.Range(0.5f, 2f);
         transform.localScale = new Vector3(randSize, randSize, randSize);
-        int ghost = Random.Range(0, 3);
+        //int ghost = Random.Range(0, 3);
         speed = Random.Range(0.01f, 0.05f);
-        if(ghost == 0)
+        baseSpeed = speed;
+        /*if(ghost == 0)
         {
             gameObject.GetComponent<CircleCollider2D>().isTrigger = true;
             gameObject.GetComponent<SpriteRenderer>().color = new Color(1,0.5f,0.5f,0.5f);
-        }
+        }*/
     }
     public void addDamage(int amount)
     {
@@ -65,6 +67,7 @@ public class EnemyScript : MonoBehaviour
         {
             distract += 1;
             this.focus = focus;
+            speed = speed * 2;
         }
         else
         {
@@ -72,6 +75,7 @@ public class EnemyScript : MonoBehaviour
             if(distract == 0)
             {
                 this.focus = focus;
+                speed = baseSpeed;
             }
         }
         

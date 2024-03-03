@@ -10,6 +10,8 @@ public class CannonScript : MonoBehaviour
     GameObject Cannon;
     float kogelForce = 40f;
 
+    bool allowShoot = true;
+
     private void Awake()
     {
         Cannon = GameObject.Find("CannonBody");
@@ -17,23 +19,26 @@ public class CannonScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!PauseMenu.GameIsPaused)
         {
-            Shoot();
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                Shoot();
+            }
 
-        if (Input.GetMouseButtonUp(1))
-        {
-            suckPortal.SetActive(false);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            suckPortal.SetActive(true);
+            if (Input.GetMouseButtonUp(1))
+            {
+                suckPortal.SetActive(false);
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                suckPortal.SetActive(true);
+            }
         }
     }
     void Shoot()
     {
-        if (kogelQueue.Count > 0)
+        if (kogelQueue.Count > 0 && allowShoot)
         {
             
             GameObject nextKogel = kogelQueue.Dequeue();
@@ -52,13 +57,9 @@ public class CannonScript : MonoBehaviour
                 rb.AddForce(transform.up * kogelForce, ForceMode2D.Impulse);
                 Cannon.GetComponent<GravityScript>().addAttractedObject(nextKogel.GetComponent<Collider2D>());
             }
-            Color kogelColor = new Color(0,0,0,0);
-            if (kogelQueue.Count > 0)
-            {
-                kogelColor = kogelQueue.Peek().GetComponent<KogelScript>().getColor();
-            }
-            Cannon.transform.Find("CannonColor").GetComponent<SpriteRenderer>().color = kogelColor;
-            Cannon.transform.Find("CannonShooterColor").GetComponent<SpriteRenderer>().color = kogelColor;
+
+            ViewNextBall();
+
         }
         else
         {
@@ -68,19 +69,52 @@ public class CannonScript : MonoBehaviour
 
     // some code from https://www.youtube.com/watch?v=LNLVOjbrQj4
 
+    void ViewNextBall()
+    {
+        Color kogelColor = new Color(0, 0, 0, 0);
+        if (kogelQueue.Count > 0)
+        {
+            kogelColor = kogelQueue.Peek().GetComponent<KogelScript>().getColor();
+            SpriteRenderer aberration = kogelQueue.Peek().GetComponent<KogelScript>().getAbSpriteRenderer();
+            if (aberration.sprite != null)
+            {
+                Cannon.transform.Find("Ab").GetComponent<SpriteRenderer>().sprite = aberration.sprite;
+                Cannon.transform.Find("Ab").GetComponent<SpriteRenderer>().color = aberration.color;
+            }
+            else
+            {
+                Cannon.transform.Find("Ab").GetComponent<SpriteRenderer>().sprite = null;
+            }
+        }
+        else
+        {
+            Cannon.transform.Find("Ab").GetComponent<SpriteRenderer>().sprite = null;
+        }
+        Cannon.transform.Find("CannonColor").GetComponent<SpriteRenderer>().color = kogelColor;
+        Cannon.transform.Find("CannonShooterColor").GetComponent<SpriteRenderer>().color = kogelColor;
+
+    }
+
     public void AddBall(GameObject caught)
     {
         kogelQueue.Enqueue(caught);
         if(kogelQueue.Count == 1)
         {
-            Color kogelColor = kogelQueue.Peek().GetComponent<KogelScript>().getColor();
-            Cannon.transform.Find("CannonColor").GetComponent<SpriteRenderer>().color = kogelColor;
-            Cannon.transform.Find("CannonShooterColor").GetComponent<SpriteRenderer>().color = kogelColor;
+            ViewNextBall();
         }
         Cannon.GetComponent<GravityScript>().removeAttractedObject(caught.GetComponent<Collider2D>());
         caught.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         caught.SetActive(false);
     }
 
-    
+    public void setAllowShoot(bool value)
+    {
+        allowShoot = value;
+    }
+
+    public void clearQueue()
+    {
+        kogelQueue.Clear();
+        ViewNextBall();
+    }
 }

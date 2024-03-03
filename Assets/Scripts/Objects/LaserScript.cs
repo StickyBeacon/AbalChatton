@@ -19,7 +19,7 @@ public class LaserScript : MonoBehaviour
     public void Initialise(int strength)
     {
         this.strength = strength * 5;
-        transform.localScale = new Vector3(0.5f*strength, this.strength, 1);
+        transform.localScale = new Vector3(this.strength, this.strength, 1);
         float ranDeg = Random.Range(0f, 360f);
         transform.rotation = Quaternion.Euler(0, 0, ranDeg);
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
