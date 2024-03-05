@@ -15,6 +15,7 @@ public class KogelPortalScript : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         GameObject kogel = Instantiate((GameObject)Resources.Load("Prefabs/DebugObject"), transform.position + new Vector3(0, 0, 10), Quaternion.identity);
         kogel.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/pop"));
+        Instantiate((GameObject)Resources.Load("Particles/Shoot"), transform.position, Quaternion.identity);
         kogel.GetComponent<KogelScript>().Initialize();
         GameObject.Find("CannonBody").GetComponent<GravityScript>().addAttractedObject(kogel.GetComponent<Collider2D>());
         yield return new WaitForSeconds(0.5f);

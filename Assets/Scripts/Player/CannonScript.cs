@@ -10,6 +10,8 @@ public class CannonScript : MonoBehaviour
     GameObject Cannon;
     float kogelForce = 40f;
 
+    public AudioSource portalSound;
+
     bool allowShoot = true;
 
     private void Awake()
@@ -33,9 +35,26 @@ public class CannonScript : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 suckPortal.SetActive(true);
+                if (!PauseMenu.GameIsPaused)
+                {
+                    GameObject.Find("ScoreManager").GetComponent<ScoreScript>().AddScore(-1);
+                }
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (suckPortal.activeSelf && portalSound.volume !=1f)
+        {
+            portalSound.volume += Time.deltaTime*10f;
+        }
+        else if(portalSound.volume >0)
+        {
+            portalSound.volume -= Time.deltaTime * 10f;
+        }
+    }
+
     void Shoot()
     {
         if (kogelQueue.Count > 0 && allowShoot)
@@ -46,10 +65,12 @@ public class CannonScript : MonoBehaviour
             {
                 kogelQueue.Enqueue(nextKogel);
                 Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/switch"));
+                Instantiate((GameObject)Resources.Load("Particles/Clink"), transform.position, Quaternion.identity);
             }
             else
             {
                 Cannon.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/cannonShot"));
+                Instantiate((GameObject)Resources.Load("Particles/Shoot"), transform.position, Quaternion.identity);
                 nextKogel.SetActive(true);
                 nextKogel.transform.position = transform.position;
                 //GameObject kogel = Instantiate(nextKogel, transform.position, transform.rotation);
@@ -64,6 +85,7 @@ public class CannonScript : MonoBehaviour
         else
         {
             Cannon.GetComponent<AudioSource>().Play();
+            Instantiate((GameObject)Resources.Load("Particles/Clink"), transform.position, Quaternion.identity);
         }
     }
 
@@ -97,6 +119,7 @@ public class CannonScript : MonoBehaviour
 
     public void AddBall(GameObject caught)
     {
+        caught.GetComponent<KogelScript>().resetStage();
         kogelQueue.Enqueue(caught);
         if(kogelQueue.Count == 1)
         {
@@ -115,6 +138,7 @@ public class CannonScript : MonoBehaviour
     public void clearQueue()
     {
         kogelQueue.Clear();
+        Cannon.GetComponent<GravityScript>().clearAttracted();
         ViewNextBall();
     }
 }

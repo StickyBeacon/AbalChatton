@@ -10,7 +10,7 @@ public class ExplosionScript : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
     public void Initalise(int strength)

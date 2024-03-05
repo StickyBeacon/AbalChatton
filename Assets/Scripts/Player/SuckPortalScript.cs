@@ -10,6 +10,7 @@ public class SuckPortalScript : MonoBehaviour
         {
             GameObject.Find("CannonShooter").GetComponent<CannonScript>().AddBall(collision.gameObject);
             GameObject.Find("CannonBody").GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/vwop"));
+            Instantiate((GameObject)Resources.Load("Particles/Shoot"), collision.transform.position, Quaternion.identity);
         }
     }
 }

@@ -23,6 +23,7 @@ public class GameScript : MonoBehaviour
 
     IEnumerator startGame()
     {
+        amountwaves = 0;
         for(int i = 0; i< 2; i++)
         {
             spawnPortal();
@@ -74,18 +75,22 @@ public class GameScript : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
             GameObject.Find("CannonShooter").GetComponent<CannonScript>().AddBall(kogel);
+            Instantiate((GameObject)Resources.Load("Particles/Clink"), kogel.transform.position, Quaternion.identity);
             gameObject.GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
         }
-
-        //Spawn Ab!
-        GameObject.Find("CannonBody").GetComponent<CannonManager>().Regenerate();
-        for(int i=0; i < abAmount; i++){
-            yield return new WaitForSeconds(1f);
-            float randItem = Random.Range(0f, 10f);
-            //DOE HIER IETS MET RANDOM ITEMS N SHIZZLE
-            spawnAb(i);
+        if (amountwaves > 0)
+        {
+            GameObject.Find("CannonBody").GetComponent<CannonManager>().Regenerate();
+            for (int i = 0; i < abAmount; i++)
+            {
+                yield return new WaitForSeconds(1f);
+                float randItem = Random.Range(0f, 10f);
+                spawnAb(i);
+            }
+            GameObject.Find("CannonShooter").GetComponent<CannonScript>().setAllowShoot(true);
         }
-        GameObject.Find("CannonShooter").GetComponent<CannonScript>().setAllowShoot(true);
+        GameObject.Find("ScoreManager").GetComponent<ScoreScript>().AddScore((amountwaves+1)*10);
+
     }
 
     public void TakeItem()
@@ -107,6 +112,7 @@ public class GameScript : MonoBehaviour
                     yield return new WaitForSeconds(0.1f);
                     if (gm == null) continue;
                     gameObject.GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
+                    Instantiate((GameObject)Resources.Load("Particles/EnemySpawn"), gm.transform.position, Quaternion.identity);
                     Destroy(gm);
                 }
                 optionList.Clear();
@@ -130,6 +136,7 @@ public class GameScript : MonoBehaviour
         Vector3 pos = new Vector3(SpawnRange/2.5f * Mathf.Cos(i*45), SpawnRange / 2.5f * Mathf.Sin(i * 45), 10);
         Vector3 offset = new Vector3(0, 0, 10);
         GameObject ab = Instantiate(aberration, pos + offset, Quaternion.identity);
+        Instantiate((GameObject)Resources.Load("Particles/EnemySpawn"), ab.transform.position, Quaternion.identity);
         ab.GetComponent<AberattionScript>().Initialise();
         optionList.Add(ab);
     }
@@ -150,20 +157,30 @@ public class GameScript : MonoBehaviour
     public void loseGame()
     {
         active = false;
+        amountwaves = 0;
         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(GameObject enemy in enemyList)
         {
+            Instantiate((GameObject)Resources.Load("Particles/Clink"), enemy.transform.position, Quaternion.identity);
             Destroy(enemy);
         }
         GameObject[] kogelList = GameObject.FindGameObjectsWithTag("Kogel");
         foreach(GameObject kogel in kogelList)
         {
+            Instantiate((GameObject)Resources.Load("Particles/Clink"), kogel.transform.position, Quaternion.identity);
             Destroy(kogel);
         }
         GameObject[] abilityList = GameObject.FindGameObjectsWithTag("Ab");
         foreach(GameObject ab in abilityList)
         {
+            Instantiate((GameObject)Resources.Load("Particles/Clink"), ab.transform.position, Quaternion.identity);
             Destroy(ab);
         }
     }
+
+    public int getWaves()
+    {
+        return amountwaves;
+    }
+
 }

@@ -38,5 +38,10 @@ public class GravityScript : MonoBehaviour
         }
     }
 
+    public void clearAttracted()
+    {
+        AttractedObjects.Clear();
+    }
+
     // some code from https://www.youtube.com/watch?v=e4DxQhTKJ7Y
 }
