@@ -59,9 +59,9 @@ public class MenuScript : MonoBehaviour
         for(int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + "x" + resolutions[i].height;
-            options.Add(option);
+            if (!options.Contains(option)) options.Add(option);
 
-            if(resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
             {
                 currentResolutionIndex = i;
             }
@@ -100,6 +100,23 @@ public class MenuScript : MonoBehaviour
             
         }
         
+    }
+
+    public void loadTut()
+    {
+        if (!isLoading)
+        {
+            TransitionElement.GetComponent<TransitionScript>().transOut();
+            isLoading = true;
+            IEnumerator startGame()
+            {
+                yield return new WaitForSeconds(1.2f);
+                SceneManager.LoadScene("Tutorial");
+            }
+            StartCoroutine(startGame());
+
+        }
+
     }
 
     public void QuitGame()

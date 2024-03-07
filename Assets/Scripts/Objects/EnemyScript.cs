@@ -17,7 +17,16 @@ public class EnemyScript : MonoBehaviour
         float randSize = Random.Range(0.5f, 1.2f * Mathf.Pow(1.1f, (GameObject.Find("GameManager").GetComponent<GameScript>().getWaves()+1)));
         transform.localScale = new Vector3(randSize, randSize, randSize);
         //int ghost = Random.Range(0, 3);
-        speed = Random.Range(0.01f, 0.05f);
+        if(GameObject.Find("GameManager").GetComponent<GameScript>().getWaves() + 1 > 7)
+        {
+            float speedMax = 0.05f * Mathf.Pow(1.1f, GameObject.Find("GameManager").GetComponent<GameScript>().getWaves() + 1);
+            speed = Random.Range(0.01f, speedMax);
+        }
+        else
+        {
+            speed = Random.Range(0.01f, 0.05f);
+        }
+        
         baseSpeed = speed;
         /*if(ghost == 0)
         {

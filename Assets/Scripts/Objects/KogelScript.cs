@@ -14,7 +14,10 @@ public class KogelScript : MonoBehaviour
         
         if (collision.gameObject.tag == "Kogel")
         {
-            gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/ballTouch" + Random.Range(1,5).ToString()));
+            if (gameObject.GetComponent<AudioSource>().enabled)
+            {
+                gameObject.GetComponent<AudioSource>().PlayOneShot((AudioClip)Resources.Load("Sounds/ballTouch" + Random.Range(1, 5).ToString()));
+            }
             Instantiate((GameObject)Resources.Load("Particles/Clink"), collision.transform.position, Quaternion.identity);
         }
         if(collision.gameObject.tag == "Enemy")

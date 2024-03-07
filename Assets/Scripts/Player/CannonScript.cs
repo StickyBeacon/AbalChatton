@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CannonScript : MonoBehaviour
 {
+    public bool tutorial = false;
     public GameObject kogelPrefab;
     public GameObject suckPortal;
     Queue<GameObject> kogelQueue = new Queue<GameObject>();
@@ -35,9 +36,12 @@ public class CannonScript : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 suckPortal.SetActive(true);
-                if (!PauseMenu.GameIsPaused)
+                if (!tutorial)
                 {
-                    GameObject.Find("ScoreManager").GetComponent<ScoreScript>().AddScore(-1);
+                    if (!PauseMenu.GameIsPaused && GameObject.Find("GameManager").GetComponent<GameScript>().isActive())
+                    {
+                        GameObject.Find("ScoreManager").GetComponent<ScoreScript>().AddScore(-1);
+                    }
                 }
             }
         }

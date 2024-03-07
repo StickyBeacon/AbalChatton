@@ -21,6 +21,14 @@ public class BHoleScript : MonoBehaviour
     }
     public void Initalise(int strength)
     {
+        Collider2D[] colliders = Physics2D.OverlapPointAll(gameObject.transform.position);
+        foreach(Collider2D col in colliders)
+        {
+            if (col.gameObject.GetComponent<BHoleScript>() != null && col.gameObject != gameObject)
+            {
+                Destroy(gameObject);
+            }
+        }
         this.strength = strength;
         gameObject.transform.localScale = new Vector3(3 + strength * 2, 3 + strength * 2, 3 + strength * 2);
         gameObject.GetComponent<SpriteRenderer>().enabled = true;

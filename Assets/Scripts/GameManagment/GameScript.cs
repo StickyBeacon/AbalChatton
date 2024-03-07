@@ -11,7 +11,7 @@ public class GameScript : MonoBehaviour
 
     bool active = false;
     float waveTimer = 123f; //best 60 seconden ofzo
-    float maxWaveTimer = 45f;
+    float maxWaveTimer = 30f;
     int amountwaves = 0;
     float timer = 0f;
     float startSpawnTime = 2f;
@@ -21,8 +21,11 @@ public class GameScript : MonoBehaviour
     int allowTake = 1; //Maak Dit groter naarmate dat #waves doorgaat.
     int abAmount = 3;
 
+    public GameObject startText;
+
     IEnumerator startGame()
     {
+        startText.SetActive(false);
         amountwaves = 0;
         for(int i = 0; i< 2; i++)
         {
@@ -46,6 +49,10 @@ public class GameScript : MonoBehaviour
                 GameObject enemy = Instantiate(enemyFab, pos, Quaternion.identity);
                 enemy.GetComponent<EnemyScript>().Initialise();
                 float lowestTime = startSpawnTime * Mathf.Pow(0.65f, amountwaves);
+                if (startSpawnTime < 0.1f)
+                {
+                    startSpawnTime = 0.1f;
+                }
                 timer = Random.Range(lowestTime, lowestTime*3);
             }
         }
@@ -156,6 +163,7 @@ public class GameScript : MonoBehaviour
 
     public void loseGame()
     {
+        startText.SetActive(true);
         active = false;
         amountwaves = 0;
         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
@@ -183,4 +191,8 @@ public class GameScript : MonoBehaviour
         return amountwaves;
     }
 
+    public bool isActive()
+    {
+        return active;
+    }
 }

@@ -8,6 +8,21 @@ public class ScoreScript : MonoBehaviour
     int score;
     public GameObject scorePanel;
     public GameObject scoreText;
+    public GameScript gScript;
+    int wave = 0;
+
+    private void FixedUpdate()
+    {
+        IEnumerator waitabit (){
+            if (!scorePanel.activeSelf)
+            {
+                yield return new WaitForSeconds(1f);
+                wave = gScript.getWaves();
+            }
+        }
+        StartCoroutine(waitabit());
+    }
+
     public void AddScore(int i)
     {
         score += i;
@@ -20,7 +35,9 @@ public class ScoreScript : MonoBehaviour
 
     public void displayScore()
     {
+        scorePanel.transform.Find("Wave").GetComponent<Text>().text = "Wave : " + wave;
         scoreText.GetComponent<Text>().text = "Score: " + score;
+
         scorePanel.SetActive(true);
     }
 
